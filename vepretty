@@ -1,0 +1,87 @@
+#!/usr/bin/env perl
+
+# Pretty-print VEP output.
+
+use strict;
+#use warnings;
+
+
+while(<>) {
+    my $line = $_;
+    chomp($line);
+    next if $line =~ /^#/;
+    my (
+	$variation,
+	$location,
+	$allele,
+	$gene,
+	$feature,
+	$feature_type,
+	$consequence,
+	$cDNA_position,
+	$cds_position,
+	$protein_position,
+	$amino_acids,
+	$codons,
+	$existing_variation,
+	$extra,
+	) = split("\t",$line);
+    my ($chromosome, $position) = split(':',$location);
+
+    my (undef, undef, $varstring) = split('_',$variation);
+    my ($reference, undef) = split('/', $varstring);
+
+    my %extras;
+
+    foreach my $item (split(';',$extra)) {
+	my ($key, $value) = split('=',$item);
+	$extras{$key} = $value;
+    }
+
+    if (defined $extras{'DISTANCE'}) {
+	if ($consequence =~ /upstream/) {
+	    $cds_position = "-"."$extras{'DISTANCE'}";
+	}
+    }
+
+    # If indels are longer than useful for humans to look at (~8bp),
+    # replace them with a number.
+    if (length($allele) > 8) {
+	$allele = "+".length($allele)."bp";
+	$codons = '-';
+	$amino_acids = '-';
+    }
+    if (length($reference) > 8) {
+	$allele = '' if $allele == '-';
+	$allele .= '; ' unless $allele == '';
+	$allele = "$allele"."-".length($reference)."bp";
+	$reference = "-";
+	$codons = '-';
+	$amino_acids = '-';
+    }
+
+    if (!defined $extras{'SYMBOL'}) {
+	$extras{'SYMBOL'} = '-';
+    }
+
+    $consequence =~ s/_/ /g;
+    
+    print(
+	join("\t",
+	     (
+	      $gene,
+	      $extras{'SYMBOL'},
+	      $position,
+	      $reference,
+	      $allele,
+	      $extras{'VARIANT_CLASS'},
+	      $consequence,
+	      $cds_position,
+	      $protein_position,
+	      $codons,
+	      $amino_acids,
+	     )
+	).
+	"\n"
+	);
+}

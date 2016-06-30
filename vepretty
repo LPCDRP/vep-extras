@@ -26,9 +26,9 @@ while(<>) {
 	$existing_variation,
 	$extra,
 	) = split("\t",$line);
-    my ($chromosome, $position) = split(':',$location);
+    my (undef, $position_range) = split(':',$location);
 
-    my (undef, undef, $varstring) = split('_',$variation);
+    my ($chromosome, $position, $varstring) = split('_',$variation);
     my ($reference, undef) = split('/', $varstring);
 
     my %extras;

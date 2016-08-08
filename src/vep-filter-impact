@@ -2,22 +2,22 @@
 
 import sys
 
-def combine_variants():
+def parse_vep():
 
     #info_per_line=[]
     #iterate though file line by line
     #for line in open(text_file):
     for line in sys.stdin:
+        print_me,print_me_2,print_me_3="","",""
+        to_print=[]
         distances=[]
         lines_printed=0
-        printed = False
         info_per_line=[]
         gene,position="",""
         shortest_upstream=""
         columns = line.split()
         if "#" in line:
-            sys.stdout.write(line)
-            f.write(line)
+            sys.stdout.write(line)     
         if "#" not in line and len(columns) > 7:
             gene = columns[0]
             position = columns[1]
@@ -29,15 +29,12 @@ def combine_variants():
             infos=columns[7]
             info=infos.split('|')
             same_variant=(len(info)-1)/24
-
-
+            print_me_first=[gene,position,ID,ref,alt,qual,PASS,info[0]]
             # Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|PICK|VARIANT_CLASS|SYMBOL_SOURCE|HGNC_ID
 
             for j in range(0,same_variant): # awkwardly parsing the info lines, removing the first attribute and then spitting in increments of 24
                 bla=int(j*24)
                 info_per_line.append(info[bla:bla+24])   
-
-
 
             for i in info_per_line: # for each info line 
                 
@@ -49,8 +46,8 @@ def combine_variants():
                 myInfo = "|".join(i)
                 if PICK is "1" and gene:
                     if "downstream_gene_variant" not in Consequence and "upstream_gene_variant" not in Consequence: 
-                        print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str(myInfo) 
-                        printed=True
+                        print_me=str(myInfo) 
+                        to_print.append(print_me)
                         lines_printed+=1
                 d= sorted([x for x in info_per_line if "upstream_gene_variant" in x[1]], key=lambda dis: int(dis[18]) )
                 # ^ If upstream, sort by distance into an array d, the first element would be the one with the shortest distance
@@ -61,23 +58,21 @@ def combine_variants():
                         second_shortest=d[1]
 
             if shortest_upstream:
+                print_me_2="|" +str("|".join(shortest_upstream))
                 print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str("|".join(shortest_upstream)) 
-                printed=True
+                to_print.append(print_me_2) 
+
                 lines_printed+=1
-                if str(shortest_upstream[19]) != str(second_shortest[19]) and lines_printed=2 : # check if the strands are the same orientation or if one is reversed
+                if str(shortest_upstream[19]) != str(second_shortest[19]) and lines_printed<2 : # check if the strands are the same orientation or if one is reversed
                     print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str("|".join(second_shortest)) 
-                    printed=True
+                    print_me_3="|" +str("|".join(second_shortest))
+                    to_print.append(print_me_3)
 
-            if printed is False: #output all the variants that was not included in the above conditions into a seperate file for farther manual investigation 
-                f.write(line)
+            print str(('\t'.join(print_me_first)))  + str(print_me) + str(print_me_2) + str(print_me_3) 
 
-        printed = False
-    f.close()
 
 if __name__ == "__main__":
 
-    #text_file=sys.argv[1]
-    f= open('no_high_impact', 'w')
 
-    combine_variants()
+    parse_vep()
 

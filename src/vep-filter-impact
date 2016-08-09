@@ -46,7 +46,7 @@ def parse_vep():
                 myInfo = "|".join(i)
                 if PICK is "1" and gene:
                     if "downstream_gene_variant" not in Consequence and "upstream_gene_variant" not in Consequence: 
-                        print_me=str(myInfo) 
+                        print_me="|"+str(myInfo) 
                         to_print.append(print_me)
                         lines_printed+=1
                 d= sorted([x for x in info_per_line if "upstream_gene_variant" in x[1]], key=lambda dis: int(dis[18]) )
@@ -59,12 +59,12 @@ def parse_vep():
 
             if shortest_upstream:
                 print_me_2="|" +str("|".join(shortest_upstream))
-                print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str("|".join(shortest_upstream)) 
+                #print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str("|".join(shortest_upstream)) 
                 to_print.append(print_me_2) 
 
                 lines_printed+=1
                 if str(shortest_upstream[19]) != str(second_shortest[19]) and lines_printed<2 : # check if the strands are the same orientation or if one is reversed
-                    print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str("|".join(second_shortest)) 
+                    #print str(gene) + "\t" +str(position)  + "\t" + str(ID) + "\t" + str(ref) + "\t" + str(alt) + "\t" + str(qual) + "\t" + str(PASS) + "\t" + str(info[0]) +"|" + str("|".join(second_shortest)) 
                     print_me_3="|" +str("|".join(second_shortest))
                     to_print.append(print_me_3)
 

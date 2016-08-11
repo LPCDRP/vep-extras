@@ -54,12 +54,12 @@ def parse_vep():
                     second_shortest=d[1]
 
             if shortest_upstream:
-                print_me_2="," +str("|".join(shortest_upstream))
+                print_me_2=str("|".join(shortest_upstream))
+                to_print.append(print_me_2)
                 if str(shortest_upstream[19]) != str(second_shortest[19]): # check if the strands are the same orientation or if one is reversed, only print if reverese 
-                    print_me_3="," +str("|".join(second_shortest))
-            #print ''.join(map(str, to_print))
-            print str(('\t'.join(print_me_first)))  + ''.join(map(str, to_print)) + str(print_me_2) + str(print_me_3)
-            # str(str(to_print).strip())[2:-2].strip()
+                    print_me_3=str("|".join(second_shortest))
+                    to_print.append(print_me_3)
+            print str(('\t'.join(print_me_first)))  + ','.join(map(str, to_print))
 
 if __name__ == "__main__":
 

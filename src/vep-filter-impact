@@ -6,7 +6,7 @@ except ImportError:
     import argparse
 import sys
 
-def parse_vep(infile):
+def parse_vep(infile, strict=False):
 
     for line in infile:
         print_me,print_me_2,print_me_3="","",""
@@ -48,20 +48,21 @@ def parse_vep(infile):
                 if "downstream_gene_variant" not in Consequence and "upstream_gene_variant" not in Consequence: 
                         print_me=str(myInfo) 
                         to_print.append(print_me)
-            
-            d= sorted([x for x in distances if "upstream_gene_variant" in x[1]], key=lambda dis: int(dis[18]) )
-            # ^ If upstream, sort by distance into an array d, the first element would be the one with the shortest distance
-            if len(d)>0:
-                shortest_upstream=d[0] 
-                if len(d)>1:
-                    second_shortest=d[1]
 
-            if shortest_upstream:
-                print_me_2=str("|".join(shortest_upstream))
-                to_print.append(print_me_2)
-                if str(shortest_upstream[19]) != str(second_shortest[19]): # check if the strands are the same orientation or if one is reversed, only print if reverese 
-                    print_me_3=str("|".join(second_shortest))
-                    to_print.append(print_me_3)
+            if not strict or not to_print:
+                d= sorted([x for x in distances if "upstream_gene_variant" in x[1]], key=lambda dis: int(dis[18]) )
+                # ^ If upstream, sort by distance into an array d, the first element would be the one with the shortest distance
+                if len(d)>0:
+                    shortest_upstream=d[0]
+                    if len(d)>1:
+                        second_shortest=d[1]
+
+                if shortest_upstream:
+                    print_me_2=str("|".join(shortest_upstream))
+                    to_print.append(print_me_2)
+                    if str(shortest_upstream[19]) != str(second_shortest[19]): # check if the strands are the same orientation or if one is reversed, only print if reverese
+                        print_me_3=str("|".join(second_shortest))
+                        to_print.append(print_me_3)
             print str(('\t'.join(print_me_first)))  + ','.join(map(str, to_print))
 
 if __name__ == "__main__":
@@ -73,6 +74,10 @@ if __name__ == "__main__":
                         nargs='?',
                         type=argparse.FileType('r'),
                         default=sys.stdin)
+    parser.add_argument('--strict',
+                        help=('strict filter. '
+                              'Only output gene(s) directly downstream of a variant or the gene containing a variant'),
+                        action='store_true')
     arguments = parser.parse_args()
 
-    parse_vep(arguments.infile)
+    parse_vep(arguments.infile, arguments.strict)

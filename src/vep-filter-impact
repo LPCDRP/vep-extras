@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
+try:
+    import configargparse as argparse
+except ImportError:
+    import argparse
 import sys
 
-def parse_vep():
+def parse_vep(infile):
 
-    #for line in open(text_file):
-    for line in sys.stdin:
+    for line in infile:
         print_me,print_me_2,print_me_3="","",""
         to_print=[]
         distances=[]
@@ -64,5 +67,12 @@ def parse_vep():
 if __name__ == "__main__":
 
     Allele,Consequence,IMPACT,SYMBOL,Gene,Feature_type,Feature,BIOTYPE,EXON,INTRON,HGVSc,HGVSp,cDNA_position,CDS_position,Protein_position,Amino_acids,Codons,Existing_variation,DISTANCE,STRAND,FLAGS,PICK,VARIANT_CLASS,SYMBOL_SOURCE,HGNC_ID=['']*25
-    
-    parse_vep()
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile',
+                        nargs='?',
+                        type=argparse.FileType('r'),
+                        default=sys.stdin)
+    arguments = parser.parse_args()
+
+    parse_vep(arguments.infile)

@@ -1,0 +1,17 @@
+##fileformat=VCFv4.0
+##FILTER=<ID=PASS,Description="All filters passed">
+##source=pbhoover.pyV1.0.2
+##INFO=<ID=RSR,Number=1,Type=Integer,Description="Reference-supporting reads">
+##INFO=<ID=VSR,Number=1,Type=Integer,Description="Variant-supporting reads">
+##INFO=<ID=VF,Number=1,Type=Float,Description="Variant frequency">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Read Depth">
+##FILTER=<ID=HETERO,Description="Enough support to call reference and variant (mixed population)">
+##bcftools_normVersion=1.3.1+htslib-1.3.1
+##bcftools_normCommand=norm --threads 8 -f /home/share/valafar/resources/H37Rv_NC000962_3.fasta --remove-duplicates
+##VEP=v84 cache=/home/share/valafar/.vep/mycobacterium_tuberculosis_h37rv/30_GCA_000195955.2 db=. assembly=ASM19595v2 genebuild=2002-07-EnsemblBacteria
+##INFO=<ID=CSQ,Number=.,Type=String,Description="Consequence annotations from Ensembl VEP. Format: Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|PICK|VARIANT_CLASS|SYMBOL_SOURCE|HGNC_ID">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+Chromosome	1849	.	C	A	427.46	PASS	RSR=6;VSR=39;VF=0.866667;DP=68;CSQ=A|upstream_gene_variant|MODIFIER|dnaN|Rv0002|Transcript|CCP42724|protein_coding|||||||||||23|-1|||SNV|ENA_GENE|,A|upstream_gene_variant|MODIFIER||Rv0004|Transcript|CCP42726|protein_coding|||||||||||85|1|||SNV||
+Chromosome	42474	.	A	G	71.26	PASS	RSR=1;VSR=8;VF=0.888889;DP=16;CSQ=G|missense_variant|MODERATE|mtc28|Rv0040c|Transcript|CCP42762|protein_coding|1/1||||892|892|298|Y/H|Tat/Cat|||-1||1|SNV|ENA_GENE|
+Chromosome	42967	.	G	C	438.75	PASS	RSR=6;VSR=35;VF=0.853659;DP=48;CSQ=C|synonymous_variant|LOW|mtc28|Rv0040c|Transcript|CCP42762|protein_coding|1/1||||399|399|133|P|ccC/ccG|||-1||1|SNV|ENA_GENE|
+Chromosome	43825	.	T	TCC	25.65	HETERO	RSR=6;VSR=3;VF=0.333333;DP=13;CSQ=

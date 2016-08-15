@@ -4,5 +4,5 @@ AC_PATH_PROG([PERL], [perl])
 AC_PATH_PROG([PANDOC], [pandoc])
 AM_CONDITIONAL([HAVE_PANDOC], [test x$PANDOC != x])
 AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile])
 AC_OUTPUT

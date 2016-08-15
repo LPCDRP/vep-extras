@@ -2,7 +2,7 @@
 PANDOC = @PANDOC@
 
 EXTRA_DIST = \
- vep-extras.7.md
+ vep-extras.7.md \
  vep-filter-impact.1.md \
  vepretty.1.md
 

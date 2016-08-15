@@ -19,7 +19,7 @@ def parse_vep(infile, strict=False):
         if "#" in line:
             sys.stdout.write(line)     
         if "#" not in line and len(columns) > 7:
-            gene = "1"
+            chromosome = columns[0]
             position= columns[1]
             ID=columns[2]
             ref=columns[3]
@@ -28,7 +28,7 @@ def parse_vep(infile, strict=False):
             PASS=columns[6]
             infos=columns[7]
             CSQs=infos.split('CSQ=')
-            print_me_first=[gene,position,ID,ref,alt,qual,PASS,CSQs[0]+"CSQ="]
+            print_me_first=[chromosome,position,ID,ref,alt,qual,PASS,CSQs[0]+"CSQ="]
             CSQ=str(CSQs[1]).split(',')
             same_variant=len(CSQ)
 

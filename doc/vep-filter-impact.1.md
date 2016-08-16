@@ -27,4 +27,4 @@ The native VEP format is not yet supported.
 
 # SEE ALSO
 
-**vep-extras**(1)
+**vep-extras**(7)
